@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://creoenmi-p.github.io',
+  compressHTML: true,
   integrations: [mdx(), sitemap()],
   devToolbar: {
     enabled: false,

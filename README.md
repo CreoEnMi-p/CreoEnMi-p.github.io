@@ -4,8 +4,10 @@
 
 ## 本地开发
 
+需要 Node.js 22.12.0 或更高版本。
+
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 

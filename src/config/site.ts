@@ -28,9 +28,9 @@ export const siteConfig: SiteConfig = {
 	memoIssueNumber: 1,
 	giscus: {
 		repo: 'CreoEnMi-p/CreoEnMi-p.github.io',
-		repoId: '',
+		repoId: 'R_kgDOTnUp_g',
 		category: 'Comments',
-		categoryId: '',
+		categoryId: 'DIC_kwDOTnUp_s4DCPs6',
 	},
 };
 

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Static Astro 5 personal blog deployed to `https://creoenmi-p.github.io/`.
+Static Astro 7 personal blog deployed to `https://creoenmi-p.github.io/`.
 The public route set is home, blog, tags, shuoshuo, about, message, and the external GitHub link.
 Do not reintroduce the upstream author's content, hotlinked assets, RSS, weekly, categories, friends,
 CWD, or LinuxDo integrations.
