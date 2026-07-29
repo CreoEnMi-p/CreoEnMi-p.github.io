@@ -1,0 +1,91 @@
+---
+import { hasGiscusConfig, siteConfig } from '../config/site';
+
+interface Props {
+	heading?: string;
+}
+
+const { heading = '评论' } = Astro.props;
+---
+
+<section class='comments-section' aria-labelledby='comments-title'>
+	<div class='section-heading'>
+		<p class='section-kicker'>Conversation</p>
+		<h2 id='comments-title'>{heading}</h2>
+	</div>
+
+	{
+		hasGiscusConfig ? (
+			<div
+				class='giscus-frame'
+				data-giscus-frame
+				data-repo={siteConfig.giscus.repo}
+				data-repo-id={siteConfig.giscus.repoId}
+				data-category={siteConfig.giscus.category}
+				data-category-id={siteConfig.giscus.categoryId}
+			>
+				<div class='integration-note giscus-status' role='status'>
+					<p>正在载入评论区…</p>
+				</div>
+				<noscript>请启用 JavaScript 以查看评论。</noscript>
+			</div>
+		) : (
+			<div class='integration-note'>
+				<p>评论系统尚未完成配置。</p>
+				<p>启用仓库 Discussions 并填写 Giscus 参数后，这里会自动出现评论区。</p>
+			</div>
+		)
+	}
+</section>
+
+{
+	hasGiscusConfig && (
+		<script is:inline>
+			(() => {
+				const frames = document.querySelectorAll('[data-giscus-frame]');
+				for (const frame of frames) {
+					if (!(frame instanceof HTMLElement) || frame.dataset.ready === 'true') continue;
+					frame.dataset.ready = 'true';
+
+					const status = frame.querySelector('.giscus-status');
+					const script = document.createElement('script');
+					const fail = () => {
+						if (!(status instanceof HTMLElement)) return;
+						status.hidden = false;
+						status.innerHTML = '<p>评论区暂时无法载入，请稍后刷新页面重试。</p>';
+					};
+
+					const observer = new MutationObserver(() => {
+						if (!frame.querySelector('iframe.giscus-frame')) return;
+						if (status instanceof HTMLElement) status.hidden = true;
+						observer.disconnect();
+					});
+
+					observer.observe(frame, { childList: true });
+					script.src = 'https://giscus.app/client.js';
+					script.async = true;
+					script.crossOrigin = 'anonymous';
+					script.dataset.repo = frame.dataset.repo ?? '';
+					script.dataset.repoId = frame.dataset.repoId ?? '';
+					script.dataset.category = frame.dataset.category ?? '';
+					script.dataset.categoryId = frame.dataset.categoryId ?? '';
+					script.dataset.mapping = 'pathname';
+					script.dataset.strict = '0';
+					script.dataset.reactionsEnabled = '1';
+					script.dataset.emitMetadata = '0';
+					script.dataset.inputPosition = 'top';
+					script.dataset.theme = 'light';
+					script.dataset.lang = 'zh-CN';
+					script.dataset.loading = 'lazy';
+					script.addEventListener('error', fail, { once: true });
+					frame.append(script);
+
+					window.setTimeout(() => {
+						if (!frame.querySelector('iframe.giscus-frame')) fail();
+						observer.disconnect();
+					}, 12000);
+				}
+			})();
+		</script>
+	)
+}

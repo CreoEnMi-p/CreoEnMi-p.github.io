@@ -1,0 +1,17 @@
+---
+import { siteConfig } from '../config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer>
+	<p>© {year} {siteConfig.author}. 写作与代码，慢慢积累。</p>
+	<p>
+		设计与结构改编自
+		<a href='https://github.com/anghunk/astro-blog' target='_blank' rel='noopener noreferrer'>
+			anghunk/astro-blog
+		</a>
+		<span aria-hidden='true'> · </span>
+		<a href={siteConfig.githubUrl} target='_blank' rel='noopener noreferrer'>Source on GitHub</a>
+	</p>
+</footer>

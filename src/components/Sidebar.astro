@@ -1,0 +1,56 @@
+---
+import { siteConfig } from '../config/site';
+import NavLink from './NavLink.astro';
+---
+
+<aside class='site-side'>
+	<div class='identity'>
+		<a class='side-avatar' href='/' aria-label={`${siteConfig.title}首页`}>
+			<img src={siteConfig.avatar} alt={`${siteConfig.author}的头像`} width='76' height='76' />
+		</a>
+		<div class='side-brand'>
+			<p class='eyebrow'>Personal notes</p>
+			<h1><a href='/'>{siteConfig.title}</a></h1>
+			<p>{siteConfig.description}</p>
+		</div>
+	</div>
+
+	<button class='search-trigger' type='button' id='search-trigger' aria-label='搜索文章'>
+		<span>搜索</span>
+		<kbd>⌘ K</kbd>
+	</button>
+
+	<nav class='side-section' aria-label='内容导航'>
+		<p class='side-label'>内容</p>
+		<ul class='side-links'>
+			<li><NavLink href='/'>首页</NavLink></li>
+			<li><NavLink href='/blog'>文章</NavLink></li>
+			<li><NavLink href='/tags'>标签</NavLink></li>
+			<li><NavLink href='/shuoshuo'>碎碎念</NavLink></li>
+		</ul>
+	</nav>
+
+	<nav class='side-section' aria-label='站点导航'>
+		<p class='side-label'>站点</p>
+		<ul class='side-links'>
+			<li><NavLink href='/about'>关于</NavLink></li>
+			<li><NavLink href='/message'>留言</NavLink></li>
+			<li><NavLink href={siteConfig.githubUrl} external>GitHub ↗</NavLink></li>
+		</ul>
+	</nav>
+</aside>
+
+<script is:inline>
+	function initSearchTrigger() {
+		const trigger = document.getElementById('search-trigger');
+		if (!trigger || trigger.dataset.ready === 'true') return;
+		trigger.dataset.ready = 'true';
+		trigger.addEventListener('click', () => window.openSearchModal?.());
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initSearchTrigger);
+	} else {
+		initSearchTrigger();
+	}
+</script>

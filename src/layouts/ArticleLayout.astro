@@ -1,0 +1,53 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+import GiscusComments from '../components/GiscusComments.astro';
+import BaseLayout from './BaseLayout.astro';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, summary, pubDate, updatedDate, heroImage, tags } = Astro.props;
+---
+
+<BaseLayout
+	title={title}
+	description={description || summary}
+	image={heroImage}
+	type='article'
+	pageClass='article-page'
+>
+	<article class='article'>
+		<header class='article-header'>
+			<p class='entry-meta'>
+				<span>published @ </span>
+				<FormattedDate date={pubDate} />
+				{
+					updatedDate && (
+						<>
+							<span class='meta-separator'>/ updated </span>
+							<FormattedDate date={updatedDate} />
+						</>
+					)
+				}
+			</p>
+			<h1>{title}</h1>
+			{
+				tags.length > 0 && (
+					<ul class='article-tags' aria-label='文章标签'>
+						{tags.map((tag) => (
+							<li><a href={`/tags/${encodeURIComponent(tag)}`}>{tag}</a></li>
+						))}
+					</ul>
+				)
+			}
+		</header>
+
+		{heroImage && <img class='hero-image' src={heroImage.src} alt='' width={heroImage.width} height={heroImage.height} />}
+
+		<div class='post-content'>
+			{summary && <p class='article-summary'>{summary}</p>}
+			<slot />
+		</div>
+	</article>
+	<GiscusComments />
+</BaseLayout>

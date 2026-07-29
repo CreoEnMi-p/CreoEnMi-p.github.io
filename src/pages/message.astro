@@ -1,0 +1,16 @@
+---
+import GiscusComments from '../components/GiscusComments.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title='留言' description='在这里留下想说的话。'>
+	<header class='page-header'>
+		<p class='section-kicker'>Guestbook</p>
+		<h1>留言</h1>
+		<p>如果你愿意，欢迎在这里留下一句话。</p>
+	</header>
+	<div class='post-content compact-copy'>
+		<p>留言由 GitHub Discussions 提供支持。首次发言需要使用 GitHub 登录，内容可在仓库中公开管理。</p>
+	</div>
+	<GiscusComments heading='留言板' />
+</BaseLayout>

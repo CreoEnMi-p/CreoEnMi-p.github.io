@@ -1,0 +1,21 @@
+---
+interface Props {
+	href: string;
+	external?: boolean;
+}
+
+const { href, external = false } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const normalizedHref = href.replace(/\/+$/, '') || '/';
+const active = normalizedHref === '/' ? pathname === '/' : pathname.startsWith(normalizedHref);
+---
+
+<a
+	href={href}
+	class:list={{ active }}
+	aria-current={active ? 'page' : undefined}
+	target={external ? '_blank' : undefined}
+	rel={external ? 'noopener noreferrer' : undefined}
+>
+	<slot />
+</a>

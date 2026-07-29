@@ -1,0 +1,33 @@
+---
+import EmptyState from '../../components/EmptyState.astro';
+import { getAllTags, getVisiblePosts } from '../../lib/posts';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getVisiblePosts();
+const tags = getAllTags(posts);
+const maxCount = Math.max(...tags.values(), 1);
+---
+
+<BaseLayout title='标签' description='按主题浏览文章。'>
+	<header class='page-header'>
+		<p class='section-kicker'>Index by subject</p>
+		<h1>标签</h1>
+		<p>沿着主题，找到彼此有关联的记录。</p>
+	</header>
+	{
+		tags.size > 0 ? (
+			<ul class='tag-cloud'>
+				{[...tags.entries()].map(([tag, count]) => (
+					<li style={`--tag-weight: ${count / maxCount}`}>
+						<a href={`/tags/${encodeURIComponent(tag)}`}>
+							<span>{tag}</span>
+							<sup>{count}</sup>
+						</a>
+					</li>
+				))}
+			</ul>
+		) : (
+			<EmptyState title='暂无标签' description='发布带有 tags 字段的文章后，标签索引会自动生成。' />
+		)
+	}
+</BaseLayout>

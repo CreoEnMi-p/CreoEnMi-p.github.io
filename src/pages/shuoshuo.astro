@@ -1,0 +1,48 @@
+---
+import EmptyState from '../components/EmptyState.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { hasMemoConfig, siteConfig } from '../config/site';
+import { getMemos } from '../lib/memos';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const { memos, error } = await getMemos();
+---
+
+<BaseLayout title='碎碎念' description='来自 GitHub Issue 的短记录与片段。'>
+	<header class='page-header'>
+		<p class='section-kicker'>Fragments</p>
+		<h1>碎碎念</h1>
+		<p>一些还不需要长成文章的念头。</p>
+	</header>
+
+	{
+		!hasMemoConfig ? (
+			<section class='integration-note'>
+				<p><strong>碎碎念尚未接入 GitHub Issue。</strong></p>
+				<p>创建“碎碎念”Issue 后，将编号写入 <code>src/config/site.ts</code>。</p>
+			</section>
+		) : error ? (
+			<EmptyState title='载入失败' description={error} />
+		) : memos.length === 0 ? (
+			<EmptyState title='还没有碎片' description='在指定 Issue 下发表第一条评论，它就会出现在这里。' />
+		) : (
+			<ol class='memo-list'>
+				{memos.map((memo) => (
+					<li>
+						<img src={siteConfig.avatar} alt='' width='38' height='38' />
+						<article>
+							<header>
+								<strong>{siteConfig.author}</strong>
+								<a href={memo.url} target='_blank' rel='noopener noreferrer'>
+									<FormattedDate date={new Date(memo.createdAt)} />
+									<span class='sr-only'>在 GitHub 查看</span>
+								</a>
+							</header>
+							<div class='memo-bubble' set:html={memo.html} />
+						</article>
+					</li>
+				))}
+			</ol>
+		)
+	}
+</BaseLayout>

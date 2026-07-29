@@ -1,0 +1,26 @@
+---
+import type { BlogPost } from '../lib/posts';
+import { getPostHref, getPostSummary } from '../lib/posts';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	posts: BlogPost[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ol class='posts'>
+	{
+		posts.map((post, index) => (
+			<li style={`--stagger: ${Math.min(index, 8)}`}>
+				<p class='date'>
+					<span>posted @</span>
+					<FormattedDate date={post.data.pubDate} />
+				</p>
+				<a class='title' href={getPostHref(post)}>{post.data.title}</a>
+				<p class='summary'>{getPostSummary(post)}</p>
+			</li>
+		))
+	}
+</ol>

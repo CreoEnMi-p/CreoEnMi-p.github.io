@@ -1,0 +1,14 @@
+---
+interface Props {
+	title: string;
+	description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<section class='empty-state' aria-live='polite'>
+	<p class='empty-mark' aria-hidden='true'>○</p>
+	<h2>{title}</h2>
+	<p>{description}</p>
+</section>

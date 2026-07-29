@@ -1,0 +1,31 @@
+---
+import { siteConfig } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title='关于' description={`关于${siteConfig.author}与这个博客。`}>
+	<header class='page-header'>
+		<p class='section-kicker'>About this place</p>
+		<h1>关于</h1>
+		<p>一块用来写作、整理与回望的私人空间。</p>
+	</header>
+	<div class='post-content'>
+		<p>
+			你好，我是 <strong>{siteConfig.author}</strong>。这里目前使用占位资料，准备好后可以在
+			<code>src/config/site.ts</code> 中一次性替换博客名称、简介、头像和作者信息。
+		</p>
+		<h2>为什么保留一个博客</h2>
+		<p>
+			社交平台适合交流，博客更适合沉淀。这里会记录值得展开的想法、解决过的问题，以及不想被时间线冲走的片段。
+		</p>
+		<h2>找到我</h2>
+		<p>
+			代码与公开项目放在
+			<a href={siteConfig.githubUrl} target='_blank' rel='noopener noreferrer'>GitHub</a>。
+		</p>
+		<aside class='editor-note'>
+			<p><strong>编辑提示</strong></p>
+			<p>发布前请把本页占位文字替换成你的真实介绍。</p>
+		</aside>
+	</div>
+</BaseLayout>

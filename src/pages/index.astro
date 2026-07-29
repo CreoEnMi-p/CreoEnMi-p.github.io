@@ -1,0 +1,26 @@
+---
+import EmptyState from '../components/EmptyState.astro';
+import PostList from '../components/PostList.astro';
+import { siteConfig } from '../config/site';
+import { getVisiblePosts } from '../lib/posts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = (await getVisiblePosts()).slice(0, 10);
+---
+
+<BaseLayout title={siteConfig.title} description={siteConfig.description} pageClass='home-page'>
+	<header class='page-intro sr-only'>
+		<h1>{siteConfig.title}</h1>
+		<p>{siteConfig.description}</p>
+	</header>
+	{
+		posts.length > 0 ? (
+			<>
+				<PostList posts={posts} />
+				<p class='read-more'><a href='/blog'>查看全部文章 <span aria-hidden='true'>→</span></a></p>
+			</>
+		) : (
+			<EmptyState title='这里还很安静' description='第一篇正式文章发布后，会出现在这里。' />
+		)
+	}
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import EmptyState from '../../components/EmptyState.astro';
+import PostList from '../../components/PostList.astro';
+import { getVisiblePosts } from '../../lib/posts';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getVisiblePosts();
+---
+
+<BaseLayout title='文章' description='所有公开文章，按时间倒序排列。'>
+	<header class='page-header'>
+		<p class='section-kicker'>Archive</p>
+		<h1>文章</h1>
+		<p>{posts.length > 0 ? `共 ${posts.length} 篇公开文章。` : '公开文章会按时间倒序排列在这里。'}</p>
+	</header>
+	{
+		posts.length > 0 ? (
+			<PostList posts={posts} />
+		) : (
+			<EmptyState title='暂无公开文章' description='草稿不会出现在生产站点。准备好后，把文章的 draft 改为 false。' />
+		)
+	}
+</BaseLayout>
