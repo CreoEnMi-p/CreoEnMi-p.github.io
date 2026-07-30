@@ -18,11 +18,11 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-	title: '我的个人博客',
-	description: '在这里记录生活、思考与创造。',
-	author: '博客作者',
+	title: '蒲通扑通',
+	description: 'Penser, c’est ma résistance',
+	author: '晏如',
 	siteUrl: 'https://creoenmi-p.github.io',
-	avatar: '/avatar.svg',
+	avatar: '/avatar.jpg',
 	githubOwner: 'CreoEnMi-p',
 	githubUrl: 'https://github.com/CreoEnMi-p',
 	memoIssueNumber: 1,

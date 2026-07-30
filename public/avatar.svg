@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
-  <title id="title">个人头像占位图</title>
-  <desc id="desc">暖白色圆形背景上的字母 C</desc>
-  <circle cx="80" cy="80" r="78" fill="#eee8dc"/>
-  <circle cx="80" cy="80" r="66" fill="none" stroke="#70251d" stroke-opacity=".18" stroke-width="2"/>
-  <path d="M109 48c-8-7-18-11-30-11-24 0-42 18-42 43s18 43 42 43c12 0 22-4 30-11l-9-14c-6 5-12 7-20 7-13 0-23-10-23-25s10-25 23-25c8 0 14 2 20 7z" fill="#70251d"/>
-</svg>
