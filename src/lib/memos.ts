@@ -20,6 +20,8 @@ interface GitHubIssueComment {
 	} | null;
 }
 
+const COMMENTS_PER_PAGE = 100;
+
 function sanitizeMarkdown(markdown: string): string {
 	const rendered = marked.parse(markdown, {
 		breaks: true,
@@ -57,16 +59,15 @@ function sanitizeMarkdown(markdown: string): string {
 	});
 }
 
-export async function getMemos(): Promise<{ memos: Memo[]; error: string | null }> {
-	if (!hasMemoConfig) {
-		return { memos: [], error: null };
-	}
+async function fetchIssueComments(endpoint: string, token: string | undefined): Promise<GitHubIssueComment[]> {
+	const comments: GitHubIssueComment[] = [];
 
-	const endpoint = `https://api.github.com/repos/${siteConfig.giscus.repo}/issues/${siteConfig.memoIssueNumber}/comments`;
-	const token = import.meta.env.GITHUB_TOKEN;
+	for (let page = 1; ; page += 1) {
+		const url = new URL(endpoint);
+		url.searchParams.set('per_page', String(COMMENTS_PER_PAGE));
+		url.searchParams.set('page', String(page));
 
-	try {
-		const response = await fetch(endpoint, {
+		const response = await fetch(url, {
 			headers: {
 				Accept: 'application/vnd.github+json',
 				'X-GitHub-Api-Version': '2022-11-28',
@@ -78,7 +79,27 @@ export async function getMemos(): Promise<{ memos: Memo[]; error: string | null 
 			throw new Error(`GitHub API returned ${response.status}`);
 		}
 
-		const comments = (await response.json()) as GitHubIssueComment[];
+		const pageComments = (await response.json()) as GitHubIssueComment[];
+		comments.push(...pageComments);
+
+		if (pageComments.length < COMMENTS_PER_PAGE) {
+			break;
+		}
+	}
+
+	return comments;
+}
+
+export async function getMemos(): Promise<{ memos: Memo[]; error: string | null }> {
+	if (!hasMemoConfig) {
+		return { memos: [], error: null };
+	}
+
+	const endpoint = `https://api.github.com/repos/${siteConfig.giscus.repo}/issues/${siteConfig.memoIssueNumber}/comments`;
+	const token = import.meta.env.GITHUB_TOKEN;
+
+	try {
+		const comments = await fetchIssueComments(endpoint, token);
 		const memos = comments
 			.filter((comment) => comment.user?.login.toLowerCase() === siteConfig.githubOwner.toLowerCase())
 			.map((comment) => ({
